@@ -32,16 +32,24 @@ namespace Todo_BE
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+  
             services.AddCors(options =>
             {
                 options.AddPolicy(name: MyAllowSpecificOrigins,
                                   builder =>
                                   {
                                       builder.WithOrigins("http://localhost:8080/",
+                                                                "http://10.61.50.2:8080/",
                                                               "http://localhost:8080",
-                                                          "https://localhost:44368/swagger/index.html");
+                                                          "https://localhost:5001/swagger/index.html")
+                                                         .AllowAnyHeader()
+                                                         .AllowAnyMethod(); 
+                                      ;
+
                                   });
             });
+
+
             services.AddScoped<ITodoRepository, TodoRepository>();
             services.AddDbContext<TodoContext>(o => o.UseSqlite(@"Data source=D:\DB\Todo.db"));
             services.AddControllers();
